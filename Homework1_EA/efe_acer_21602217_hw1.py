@@ -5,20 +5,98 @@ Author: Efe Acer
 
 import sys
 
+# Necessary imports
+import numpy as np
+import matplotlib.pyplot as plt # for plots
+from scipy.io import loadmat # to be able to use .mat file in the python environment
+from scipy.special import comb # for efficient combination computation
+from matplotlib.patches import Ellipse
+
 question = sys.argv[1]
 
 def efe_acer_21602217_hw1(question):
     if question == '1' :
-        print(1)
-        ##question 1 code goes here
+
+        # QUESTION 1
+        print('QUESTION 1\n')
+
+        # PART A
+        print('PART A\n')
+
+        A = np.array([[1, 0, -1, 2],
+                      [2, 1, -1, 5],
+                      [3, 3, 0, 9]])
+        alpha = np.random.rand()
+        beta = np.random.rand()
+        x_n = np.array([alpha - 2 * beta, 
+                        -alpha - beta, 
+                        alpha,
+                        beta])
+        print('A.x_n =', A.dot(x_n), 
+              '\nAs it can be seen the vector A.x_n is 0 for arbitrary alpha and beta.\n')
+
+        # PART B
+        print('PART B\n')
+
+        b = np.array([1, 4, 9])
+        x_p = np.array([4, 2, 1, -1])
+        print('A.x_p =', A.dot(x_p), 
+              '\nAs it can be seen the vector A.x_p equals the vector b.\n')
+
+        # PART C
+        print('PART C\n')
+
+        alpha = np.random.rand()
+        beta = np.random.rand()
+        x_n_prime = np.array([alpha - 2 * beta + 1, 
+                              -alpha - beta + 2, 
+                              alpha,
+                              beta])
+        print('A.x_n_prime =', A.dot(x_n_prime), 
+              '\nAs it can be seen the vector A.x_n_prime equals the vector b.\n')
+
+        # PART D
+        print('PART D\n')
+
+        U, S, V_T = np.linalg.svd(A)
+        Sigma_plus = np.zeros(A.shape)
+        Sigma_plus[:len(S), :len(S)] = np.diag(np.concatenate((1 / S[0:2], np.array([0]))))
+        Sigma_plus = Sigma_plus.T
+        A_plus = V_T.T.dot(Sigma_plus).dot(U.T)
+        print(A.dot(A_plus).dot(A), '\n is an approximation of A.')
+        print('A_+:\n', A_plus, '\n')
+
+        A_plus = np.linalg.pinv(A)
+        print(A.dot(A_plus).dot(A), 
+              '\n is also an approximation of A, but here pinv() is used to compute A_+.')
+        print('A_+:\n', A_plus, '\n')
+
+        # PART E
+        print('PART E\n')
+
+        # the tuples (alpha, beta) that results in one of the sparsest solutions
+        sparsest_args = [(0, 0), (1, 1), (0, 1 / 2), (0, 2), (-1, 0), (2, 0)] 
+
+        for alpha_sparse, beta_sparse in sparsest_args:
+            x_sparsest = np.array([alpha_sparse - 2 * beta_sparse + 1, 
+                                   -alpha_sparse - beta_sparse + 2, 
+                                   alpha_sparse,
+                                   beta_sparse])
+            print('alpha = ', alpha_sparse, ' beta = ', beta_sparse)
+            print('x_sparsest = ', x_sparsest)
+            print('A.x_sparsest =', A.dot(x_n_prime), 
+                  '\nx_sparsest satisfies the system as it can be seen.\n')
+    
+        # PART F
+        print('PART F\n')
+
+        # A_plus = np.linalg.pinv(A)
+        x_least_norm = A_plus.dot(b)
+
+        print('The least norm solution: ', x_least_norm)
         
     elif question == '2' :
         
-        # Necassary imports
-        import numpy as np 
-        import matplotlib.pyplot as plt
-        from scipy.io import loadmat # to be able to use .mat file in the python environment
-
         # QUESTION 2
         print('QUESTION 2\n')
 
@@ -258,12 +336,7 @@ def efe_acer_21602217_hw1(question):
         # Show all figures
         plt.show()
 
-    elif question == '3' :
-        
-        # Necessary imports
-        import numpy as np
-        import matplotlib.pyplot as plt # for bar plots
-        from scipy.special import comb # for efficient combination computation
+    elif question == '3':
 
         # QUESTION 3
         print('QUESTION 3\n')
@@ -452,6 +525,100 @@ def efe_acer_21602217_hw1(question):
         print('P(language|activation) is computed as: ', prob_l_given_active)
 
         # Show all figures
+        plt.show()
+        
+    elif question == '4':
+        
+        # QUESTION 4
+        print('QUESTION 4\n')
+        
+        def decompose(A):
+            """
+            Given a positive definite matrix A, computes and returns a 
+            matrix Y such that Y^T.Y decomposes A. This decomposition 
+            is a special case of SVD for positive definite matrices.
+            Args:
+                A: A positive definite matrix
+            Returns:
+                Y: A matrix such that A = Y^T.Y
+            """
+            Q, L, Q_T = np.linalg.svd(A) 
+            L_sqrt = np.sqrt(np.diag(L))
+            Y = L_sqrt.dot(Q_T)
+            return Y
+
+        def ndRandn(mean, cov, num=1):
+            """
+            Generates a set of samples drawn from a multidimensional 
+            Gaussian distribution with the specified mean (an N-vector)
+            and covariance (an NxN matrix). The parameter num specifies
+            the number of samples to return (default is 1).
+            Args:
+                mean: The mean of the multidimensional Gaussian 
+                    distribution (an N-vector)
+                cov: The covariance of the multidimensional Gaussian
+                    distribution (an NXN matrix)
+                num: Number of samples to return (default is 1)
+            Returns:
+                samples: A set of samples drawn from a multidimensional 
+                    Gaussian distribution (stored as a 2D numpy array)
+            """
+            samples = []
+            N = np.size(cov, 0)
+            zero_mean = np.zeros(N)
+            ident_cov = np.identity(N)
+            for _ in range(num):
+                # Prepare a zero mean, unit covariance sample, that will later be adjusted
+                sample_ident_cov = np.random.multivariate_normal(zero_mean, ident_cov)
+                # We can apply a special case of SVD to decompose A as Y^T.Y
+                # Y = np.linalg.cholesky(cov).T # alternative library function
+                Y = decompose(cov)
+                # Adjust the sample to have the specified mean and covariance
+                sample = sample_ident_cov.dot(Y)
+                sample += mean
+                samples.append(sample)
+            return np.array(samples)
+
+        def get_standard_deviational_ellipse(sample_mean, sample_cov):
+            """
+            Generates the standard deviational ellipse
+            for the data drawn from a particular 2-dimensional Gaussian
+            Distribution.  
+            Args:
+                sample_mean: The mean of the 2-dimensional Gaussian 
+                    distribution samples (a 2-vector)
+                sample_cov: The covariance of the 2-dimensional Gaussian
+                    distribution samples(a 2X2 matrix)
+            Returns:
+                error_ellipse: The Ellipse object representing
+                    the standard deviational ellipse
+            """
+            eigvals, eigvecs = np.linalg.eig(sample_cov)
+            descending_order = eigvals.argsort()[::-1]
+            eigvals = eigvals[descending_order]
+            eigvecs = eigvecs[descending_order]
+            theta = np.rad2deg(-np.arctan2(eigvecs[0, 1], eigvecs[0, 0]))
+            width = np.sqrt(eigvals[0]) * 2 * 2 
+            height = np.sqrt(eigvals[1]) * 2 * 2
+            error_ellipse = Ellipse(xy=sample_mean, width=width, height=height,
+                                    angle=theta, edgecolor='r', fc='None', lw=2)
+            return error_ellipse
+
+        mean = np.array([2, 10])
+        cov = np.array([[1, -1],
+                        [-1, 4]])
+        samples = ndRandn(mean, cov, 1000)
+        sample_mean = np.mean(samples, axis=0)
+        print('Mean of the samples is:\n', sample_mean)
+        sample_cov = np.cov(samples, rowvar=False)
+        print('Covariance of the samples is:\n', sample_cov)
+        x = [sample[0] for sample in samples]
+        y = [sample[1] for sample in samples]
+        plt.scatter(x, y, s=30)
+        ellipse = get_standard_deviational_ellipse(sample_mean, sample_cov)
+        plt.figure(1)
+        plt.title('The Standard Deviational Ellipse')
+        plt.gca().add_patch(ellipse)
         plt.show()
 
 efe_acer_21602217_hw1(question)
