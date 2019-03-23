@@ -13,3 +13,12 @@
 - Multivariate Normal Distribution
 - Standard Deviational Ellipse
 
+### Assignment 2: 
+- Neuroelectronics
+- Leaky Integrate-and-Fire  Neuron Model
+- Spike Triggerred Average (STA)
+- Lateral Geniculate Nuclei cells and their Neural Activity
+- Analysis of Neural Response
+- Difference of Gaussians center-surround receptive fields
+- Gabor receptive fields
+- Image processing and Convolution
