@@ -13,7 +13,7 @@
 - Multivariate Normal Distribution
 - Standard Deviational Ellipse
 
-### Assignment 2: 
+### Assignment 2: *Neural Models*
 - Neuroelectronics
 - Leaky Integrate-and-Fire  Neuron Model
 - Spike Triggerred Average (STA)
@@ -22,3 +22,12 @@
 - Difference of Gaussians center-surround receptive fields
 - Gabor receptive fields
 - Image processing and Convolution
+
+### Assignment 3: *Supervised Learning* 
+- Ordinary Least Squares
+- Linear & Higher Order Linearized Models
+- Parametric & Nonparametric Nonlinear Models
+- Maximum Likelihood Estimator
+- Ridge Regression
+- Cross Validation
+- Hypothesis Testing
