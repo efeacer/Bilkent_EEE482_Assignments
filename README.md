@@ -32,7 +32,7 @@
 - Cross Validation
 - Hypothesis Testing
 
-### Assignment 3: *Supervised/Unsupervised Learning* 
+### Assignment 4: *Supervised/Unsupervised Learning* 
 - Principal Component Analysis (PCA)
 - Independent Component Analysis (ICA)
 - Nonnegative Matrix Factorization (NNMF)
