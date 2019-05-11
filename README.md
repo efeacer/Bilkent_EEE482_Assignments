@@ -31,3 +31,14 @@
 - Ridge Regression
 - Cross Validation
 - Hypothesis Testing
+
+### Assignment 3: *Supervised/Unsupervised Learning* 
+- Principal Component Analysis (PCA)
+- Independent Component Analysis (ICA)
+- Nonnegative Matrix Factorization (NNMF)
+- Classical Multi-dimensional Scaling (CMDS)
+- k-means Clustering 
+- Winner Take All Decoder
+- Maximum Likelihood Decoder
+- Maximum-a-Posteriori Decoder
+- Linear Discriminant Analysis (LDA) Based Classifer
